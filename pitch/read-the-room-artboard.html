@@ -1,0 +1,1301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Read the Room &mdash; Screen Flow Artboard</title>
+<style>
+  :root {
+    --canvas: #ebe8df;
+    --canvas-grid: rgba(0, 0, 0, 0.025);
+    --ink: #2d2d2d;
+    --ink-soft: #555;
+    --ink-muted: #8a8578;
+    --ink-faint: #bab5a8;
+    --chrome: #e6e2d8;
+    --chrome-dark: #d4cfc2;
+    --paper: #ffffff;
+    --paper-soft: #fdfcf8;
+    --cream: #f7f5ef;
+    --cream-deep: #ede8dc;
+    --line: #e0dbd0;
+    --line-soft: #ede5d0;
+    --gold: #c4a35a;
+    --gold-soft: #dabb6a;
+    --gold-pale: #b5a272;
+    --jp-bg: #faf6ed;
+    --jp-edge: #e8d9b5;
+    --jp-ink: #8a7030;
+    --cn-bg: #fbf1ed;
+    --cn-edge: #e8c5b5;
+    --cn-ink: #a04030;
+    --in-bg: #fef5e7;
+    --in-edge: #eed6a3;
+    --in-ink: #8a5a1a;
+    --us-bg: #f0f4fa;
+    --us-edge: #c5d5ea;
+    --us-ink: #3a5a8b;
+    --bridge-bg: #f3f1ea;
+    --bridge-edge: #d8cfbd;
+    --traffic-r: #ff5f57;
+    --traffic-y: #febc2e;
+    --traffic-g: #28c840;
+
+    --serif: "Iowan Old Style", "Apple Garamond", Georgia, "Noto Serif JP", serif;
+    --sans: "Helvetica Neue", "Noto Sans JP", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background-color: var(--canvas);
+    background-image:
+      linear-gradient(var(--canvas-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--canvas-grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ---------- Artboard masthead ---------- */
+  .mast {
+    padding: 56px 48px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .mast .eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold-pale);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .mast h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 42px;
+    line-height: 1.1;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .mast .sub {
+    font-size: 14px;
+    color: var(--ink-muted);
+    max-width: 620px;
+    line-height: 1.6;
+  }
+  .mast .legend {
+    display: flex;
+    gap: 28px;
+    margin-top: 32px;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .legend .chip {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .chip.desktop { background: #c5d5ea; }
+  .chip.phone { background: #e8c5b5; }
+
+  /* ---------- Flow section ---------- */
+  .flow {
+    padding: 48px 48px 16px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  .flow-head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 6px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+  }
+  .flow-num {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 3px;
+  }
+  .flow-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .flow-route {
+    margin-left: auto;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    background: rgba(255, 255, 255, 0.6);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+  }
+  .flow-desc {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin: 14px 0 32px;
+    max-width: 720px;
+    line-height: 1.6;
+  }
+
+  /* ---------- Screens row ---------- */
+  .row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    overflow-x: auto;
+    padding: 8px 0 32px;
+  }
+  .row::-webkit-scrollbar { height: 8px; }
+  .row::-webkit-scrollbar-track { background: transparent; }
+  .row::-webkit-scrollbar-thumb { background: var(--chrome-dark); border-radius: 4px; }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--gold);
+    width: 60px;
+    padding-top: 180px;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  figure.screen {
+    margin: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  figure.screen figcaption {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 500;
+    max-width: 260px;
+    line-height: 1.5;
+  }
+  figure.screen .caption-note {
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 1px;
+    margin-top: 2px;
+    text-transform: none;
+    font-style: italic;
+  }
+
+  /* ---------- Desktop frame ---------- */
+  .desktop {
+    width: 420px;
+  }
+  .desktop .frame {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--paper);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      0 12px 40px -8px rgba(40, 30, 20, 0.18),
+      0 24px 80px -20px rgba(40, 30, 20, 0.22);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .desktop .chrome-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--chrome-dark);
+  }
+  .desktop .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .desktop .dots span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: block;
+  }
+  .dots .r { background: var(--traffic-r); }
+  .dots .y { background: var(--traffic-y); }
+  .dots .g { background: var(--traffic-g); }
+  .desktop .url {
+    flex: 1;
+    background: var(--paper);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    border: 1px solid var(--chrome-dark);
+    text-align: center;
+  }
+  .desktop .body {
+    height: 320px;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+    padding: 28px 32px;
+    overflow: hidden;
+  }
+
+  /* ---------- Phone frame ---------- */
+  .phone {
+    width: 240px;
+  }
+  .phone .device {
+    width: 100%;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #1a1814;
+    padding: 8px;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.06),
+      0 16px 40px -8px rgba(40, 30, 20, 0.22),
+      0 28px 80px -20px rgba(40, 30, 20, 0.25);
+  }
+  .phone .screen-inner {
+    border-radius: 22px;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+    overflow: hidden;
+    position: relative;
+    min-height: 420px;
+  }
+  .phone .status {
+    height: 22px;
+    background: rgba(0, 0, 0, 0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .phone .status::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 14px;
+    background: #1a1814;
+    border-radius: 10px;
+  }
+  .phone .url-mini {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 8px;
+    color: var(--ink-faint);
+    padding: 2px 10px 0;
+    text-align: left;
+  }
+  .phone .body {
+    padding: 14px 16px 18px;
+    height: 400px;
+    overflow: hidden;
+  }
+
+  /* ---------- Shared inner UI ---------- */
+  .eyebrow-tiny {
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    color: var(--gold-pale);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .title-serif {
+    font-family: var(--serif);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+  }
+  .hr-gold {
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+    margin: 10px 0;
+  }
+
+  /* Hub cards */
+  .hub-grid-desktop {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .hub-card-desktop {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 18px 14px;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 148px;
+  }
+  .hub-card-desktop .flag {
+    width: 28px; height: 28px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .flag.jp { background: var(--jp-bg); color: var(--jp-ink); }
+  .flag.cn { background: var(--cn-bg); color: var(--cn-ink); }
+  .flag.in { background: var(--in-bg); color: var(--in-ink); }
+  .hub-card-desktop .name {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .hub-card-desktop .concepts {
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .hub-card-desktop .concept-jp { font-family: "Noto Serif JP", var(--serif); color: var(--jp-ink); }
+  .hub-card-desktop .concept-cn { font-family: "Noto Serif JP", var(--serif); color: var(--cn-ink); }
+  .hub-card-desktop .concept-in { font-style: italic; color: var(--in-ink); }
+  .hub-card-desktop .arrow-right {
+    margin-top: auto;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .hub-phone-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 11px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    margin-bottom: 7px;
+  }
+  .hub-phone-card .flag {
+    width: 26px; height: 26px;
+    border-radius: 13px;
+    display: grid; place-items: center;
+    font-family: var(--serif);
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .hub-phone-card .name {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  .hub-phone-card .concepts {
+    font-size: 8.5px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .hub-phone-card .arr {
+    margin-left: auto;
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+
+  /* Intro screen */
+  .intro-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 20px 8px 28px;
+  }
+  .intro-center .eyebrow-tiny { margin-bottom: 14px; }
+  .intro-native {
+    font-family: "Noto Serif JP", var(--serif);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--cn-ink);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .intro-en {
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .intro-rule {
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    margin: 6px 0 14px;
+  }
+  .intro-copy {
+    font-size: 10px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin: 0 0 6px;
+    max-width: 180px;
+  }
+  .intro-copy-muted {
+    font-size: 9px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin: 0 0 22px;
+    max-width: 180px;
+  }
+  .btn-primary {
+    padding: 10px 32px;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    display: inline-block;
+    text-align: center;
+    border: none;
+  }
+
+  /* Progress + scenario */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+  }
+  .progress-num {
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--gold-pale);
+    letter-spacing: 1px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--line);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+  }
+  .scenario-native {
+    font-family: "Noto Serif JP", var(--serif);
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.6;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .scenario-en {
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    margin: 0 0 14px;
+  }
+  .opt {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    margin-bottom: 6px;
+  }
+  .opt.selected {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #faf6ed, #f5eedf);
+    box-shadow: 0 1px 6px rgba(196, 163, 90, 0.18);
+  }
+  .opt-native {
+    font-family: "Noto Serif JP", var(--serif);
+    font-size: 10px;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .opt-en {
+    font-size: 8.5px;
+    color: var(--ink-faint);
+    line-height: 1.35;
+    margin-top: 2px;
+  }
+
+  /* Reveal: cultural comparison */
+  .reveal-scenario {
+    font-family: "Noto Serif JP", var(--serif);
+    font-size: 10.5px;
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 4px 0 8px;
+  }
+  .your-answer {
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--cn-bg), #f5e5dd);
+    border: 1px solid var(--cn-edge);
+    margin-bottom: 10px;
+  }
+  .your-answer.jp { background: linear-gradient(135deg, var(--jp-bg), #f5eedf); border-color: var(--jp-edge); }
+  .your-answer.in { background: linear-gradient(135deg, var(--in-bg), #fbe9c0); border-color: var(--in-edge); }
+  .your-answer-label {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    color: var(--gold-pale);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+  .your-answer-text {
+    font-size: 9px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .lens {
+    padding: 7px 8px;
+    border-radius: 8px;
+    font-size: 9px;
+    line-height: 1.4;
+  }
+  .lens.cn { background: var(--cn-bg); border: 1px solid var(--cn-edge); }
+  .lens.us { background: var(--us-bg); border: 1px solid var(--us-edge); }
+  .lens.jp { background: var(--jp-bg); border: 1px solid var(--jp-edge); }
+  .lens.in { background: var(--in-bg); border: 1px solid var(--in-edge); }
+  .lens-lbl {
+    font-size: 7px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .lens.cn .lens-lbl { color: var(--cn-ink); }
+  .lens.us .lens-lbl { color: var(--us-ink); }
+  .lens.jp .lens-lbl { color: var(--jp-ink); }
+  .lens.in .lens-lbl { color: var(--in-ink); }
+  .lens-name {
+    font-family: "Noto Serif JP", var(--serif);
+    font-weight: 700;
+    font-size: 10.5px;
+    margin-bottom: 3px;
+  }
+  .lens.cn .lens-name { color: var(--cn-ink); }
+  .lens.us .lens-name { color: var(--us-ink); font-family: var(--serif); }
+  .lens.jp .lens-name { color: var(--jp-ink); }
+  .lens.in .lens-name { color: var(--in-ink); font-family: var(--serif); font-style: italic; }
+  .lens-desc {
+    font-size: 8px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    margin-bottom: 5px;
+  }
+  .plus { font-size: 7.5px; color: #7a9a4a; font-weight: 500; margin-bottom: 1px; }
+  .minus { font-size: 7.5px; color: #b07040; font-weight: 500; }
+
+  /* Bridge panel */
+  .bridge {
+    padding: 10px 12px;
+    background: var(--bridge-bg);
+    border: 1px solid var(--bridge-edge);
+    border-radius: 10px;
+    position: relative;
+    margin-top: 4px;
+  }
+  .bridge::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 14px; right: 14px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .bridge-lbl {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    color: var(--gold-pale);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 2px;
+    margin-bottom: 5px;
+  }
+  .bridge-q {
+    font-family: var(--serif);
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  /* Gospel (old JP) panel for before/after */
+  .gospel {
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #fdfcf8, #f8f4ea);
+    border: 1px solid #e8dfc8;
+    border-radius: 10px;
+    position: relative;
+  }
+  .gospel-lbl {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    color: var(--gold-pale);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .gospel-body {
+    font-size: 8.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .gospel-en {
+    font-size: 7.5px;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    margin-top: 4px;
+  }
+
+  /* Result */
+  .result-h-native {
+    font-family: "Noto Serif JP", var(--serif);
+    font-weight: 700;
+    font-size: 20px;
+    margin: 4px 0 0;
+    line-height: 1.15;
+    color: var(--cn-ink);
+  }
+  .result-h-native.jp { color: var(--jp-ink); }
+  .result-h-native.in { color: var(--in-ink); font-style: italic; }
+  .result-h-sub {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 400;
+    margin: 2px 0 10px;
+  }
+  .result-desc {
+    font-size: 9px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 14px;
+  }
+  .bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .bar-cn { color: var(--cn-ink); }
+  .bar-jp { color: var(--jp-ink); }
+  .bar-in { color: var(--in-ink); }
+  .bar-us { color: var(--us-ink); }
+  .bar {
+    height: 7px;
+    border-radius: 4px;
+    background: var(--cream-deep);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .bar .fill-cn { position: absolute; left: 0; top: 0; bottom: 0; width: 62%; background: linear-gradient(90deg, #c47a5a, #d69875); border-radius: 4px 0 0 4px; }
+  .bar .fill-jp { position: absolute; left: 0; top: 0; bottom: 0; width: 55%; background: linear-gradient(90deg, var(--gold), var(--gold-soft)); border-radius: 4px 0 0 4px; }
+  .bar .fill-in { position: absolute; left: 0; top: 0; bottom: 0; width: 58%; background: linear-gradient(90deg, #c89450, #deb070); border-radius: 4px 0 0 4px; }
+  .bar .fill-us-62 { position: absolute; right: 0; top: 0; bottom: 0; width: 38%; background: linear-gradient(90deg, #6a8abb, #3a5a8b); border-radius: 0 4px 4px 0; }
+  .bar .fill-us-55 { position: absolute; right: 0; top: 0; bottom: 0; width: 45%; background: linear-gradient(90deg, #6a8abb, #3a5a8b); border-radius: 0 4px 4px 0; }
+  .bar .fill-us-58 { position: absolute; right: 0; top: 0; bottom: 0; width: 42%; background: linear-gradient(90deg, #6a8abb, #3a5a8b); border-radius: 0 4px 4px 0; }
+
+  .signature {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: var(--bridge-bg);
+    border: 1px solid var(--bridge-edge);
+    border-radius: 10px;
+  }
+  .signature-lbl {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    color: var(--gold-pale);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sig-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .pill {
+    display: inline-block;
+    padding: 3px 7px;
+    border-radius: 10px;
+    background: var(--paper-soft);
+    border: 1px solid var(--bridge-edge);
+    font-size: 7.5px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .sig-body {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 8.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* Flow change callout */
+  .change-callout {
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: rgba(196, 163, 90, 0.08);
+    border: 1px dashed var(--gold-pale);
+    border-radius: 8px;
+    max-width: 720px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .change-callout strong { color: var(--ink); font-family: var(--serif); font-weight: 600; }
+
+  /* Tag above phone showing state */
+  .state-tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--paper);
+    color: var(--ink-muted);
+    border: 1px solid var(--line);
+    margin-bottom: 6px;
+  }
+  .state-tag.old { background: #f5ede4; color: #8a6430; border-color: #e0c89c; }
+  .state-tag.new { background: #e8f2e0; color: #4a7030; border-color: #b8d0a0; }
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="eyebrow">Read the Room &middot; Screen Flow Artboard</div>
+  <h1>All screens, all flows, one glance.</h1>
+  <p class="sub">Every key screen of the app rendered inline as a design artifact. Desktop chrome for the hub, phone chrome for the three quiz flows. No images, no external assets &mdash; everything styled directly in HTML/CSS.</p>
+  <div class="legend">
+    <span><span class="chip desktop"></span>Desktop (420px)</span>
+    <span><span class="chip phone"></span>Phone (240px)</span>
+  </div>
+</div>
+
+<!-- ========== FLOW 01 ========== -->
+<section class="flow">
+  <div class="flow-head">
+    <span class="flow-num">01</span>
+    <h2 class="flow-title">Entry &mdash; the hub</h2>
+    <span class="flow-route">/ &mdash; optional, skippable</span>
+  </div>
+  <p class="flow-desc">The user lands here only if they type the bare URL. Otherwise they go straight to <code>/china</code>, <code>/india</code>, or <code>/japan</code>. Three cards, each with a native-language concept preview so the target audience recognizes themselves instantly.</p>
+
+  <div class="row">
+    <!-- DESKTOP HUB -->
+    <figure class="screen desktop">
+      <div class="frame">
+        <div class="chrome-bar">
+          <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+          <div class="url">readtheroom.app/</div>
+        </div>
+        <div class="body">
+          <div class="eyebrow-tiny">READ THE ROOM</div>
+          <h3 class="title-serif" style="font-size: 22px;">Pick your cultural mirror.</h3>
+          <div class="hr-gold"></div>
+          <p style="font-size: 11px; color: var(--ink-muted); line-height: 1.6; margin: 0 0 4px;">A quiz to take with a friend, not alone. 10 scenarios, no right answers.</p>
+
+          <div class="hub-grid-desktop">
+            <div class="hub-card-desktop">
+              <div class="flag jp">JP</div>
+              <div class="name">Japan</div>
+              <div class="concepts">
+                <span class="concept-jp">&#21644; &middot; &#25105;&#24930; &middot; &#20808;&#36649;&#24460;&#36649;</span><br/>
+                wa &middot; gaman &middot; senpai
+              </div>
+              <div class="arrow-right">&rarr;</div>
+            </div>
+            <div class="hub-card-desktop">
+              <div class="flag cn">CN</div>
+              <div class="name">China</div>
+              <div class="concepts">
+                <span class="concept-cn">&#38754;&#23376; &middot; &#20851;&#31995; &middot; &#23389;</span><br/>
+                mianzi &middot; guanxi &middot; xiao
+              </div>
+              <div class="arrow-right">&rarr;</div>
+            </div>
+            <div class="hub-card-desktop">
+              <div class="flag in">IN</div>
+              <div class="name">India</div>
+              <div class="concepts">
+                <span class="concept-in">Log kya kahenge</span><br/>
+                izzat &middot; sanskaar
+              </div>
+              <div class="arrow-right">&rarr;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Desktop hub</figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- PHONE HUB -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/</div>
+          <div class="body">
+            <div class="eyebrow-tiny">READ THE ROOM</div>
+            <h3 class="title-serif" style="font-size: 14px;">Pick your<br/>cultural mirror.</h3>
+            <div class="hr-gold"></div>
+            <p style="font-size: 9px; color: var(--ink-muted); line-height: 1.5; margin: 0 0 12px;">A quiz to take with a friend, not alone.</p>
+
+            <div class="hub-phone-card">
+              <div class="flag jp">JP</div>
+              <div>
+                <div class="name">Japan</div>
+                <div class="concepts">&#21644; &middot; &#25105;&#24930; &middot; senpai</div>
+              </div>
+              <div class="arr">&rarr;</div>
+            </div>
+            <div class="hub-phone-card">
+              <div class="flag cn">CN</div>
+              <div>
+                <div class="name">China</div>
+                <div class="concepts">&#38754;&#23376; &middot; &#20851;&#31995; &middot; &#23389;</div>
+              </div>
+              <div class="arr">&rarr;</div>
+            </div>
+            <div class="hub-phone-card">
+              <div class="flag in">IN</div>
+              <div>
+                <div class="name">India</div>
+                <div class="concepts">Log kya kahenge &middot; izzat</div>
+              </div>
+              <div class="arr">&rarr;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Mobile hub</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ========== FLOW 02: CHINESE QUIZ ========== -->
+<section class="flow">
+  <div class="flow-head">
+    <span class="flow-num">02</span>
+    <h2 class="flow-title">Chinese quiz flow</h2>
+    <span class="flow-route">/china &mdash; Simplified Chinese primary, English subtitle</span>
+  </div>
+  <p class="flow-desc">The full journey: intro &rarr; scenario &rarr; reveal with cultural frame and bridge question &rarr; result with emotional signature. Chinese characters are primary so the student sees their own language first; English sits underneath for an American friend reading along.</p>
+
+  <div class="row">
+    <!-- INTRO -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/china</div>
+          <div class="body">
+            <div class="intro-center">
+              <div class="eyebrow-tiny">READ THE ROOM</div>
+              <p class="intro-native">&#20013;&#22269; &amp; &#32654;&#22269;</p>
+              <p class="intro-en">China &amp; America</p>
+              <div class="intro-rule"></div>
+              <p class="intro-copy">10&#20010;&#22330;&#26223;&#12290;&#27809;&#26377;&#23545;&#38169;&#12290;&#19982;&#26379;&#21451;&#19968;&#36215;&#26469;&#21543;&#12290;</p>
+              <p class="intro-copy-muted">10 scenarios, no right answers. Take it with a friend.</p>
+              <div class="btn-primary">&#24320;&#22987; &middot; Start</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Intro</figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- SCENARIO -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/china</div>
+          <div class="body">
+            <div class="progress-row">
+              <span class="progress-num">04 / 10</span>
+              <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+            </div>
+            <p class="scenario-native">&#29238;&#27597;&#24076;&#26395;&#20320;&#27605;&#19994;&#21518;&#22238;&#22269;&#24037;&#20316;&#12290;&#20320;&#24819;&#30041;&#19979;&#26469;&#12290;</p>
+            <p class="scenario-en">Your parents want you home after graduation. You want to stay.</p>
+
+            <div class="opt">
+              <div class="opt-native">&#25353;&#20182;&#20204;&#24076;&#26395;&#30340;&#21435;&#20570;&#12290;</div>
+              <div class="opt-en">Do what they want.</div>
+            </div>
+            <div class="opt selected">
+              <div class="opt-native">&#20808;&#31572;&#24212;&#65292;&#20197;&#21518;&#20877;&#35828;&#12290;</div>
+              <div class="opt-en">Agree for now, bring it up later.</div>
+            </div>
+            <div class="opt">
+              <div class="opt-native">&#22374;&#35802;&#22320;&#21578;&#35785;&#20182;&#20204;&#12290;</div>
+              <div class="opt-en">Tell them honestly.</div>
+            </div>
+            <div class="opt">
+              <div class="opt-native">&#36825;&#26159;&#25105;&#30340;&#20154;&#29983;&#12290;</div>
+              <div class="opt-en">It's my life.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Scenario &mdash; Q4<br/><span class="caption-note">option 2 selected</span></figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- REVEAL -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/china</div>
+          <div class="body">
+            <p class="reveal-scenario">&#29238;&#27597;&#24076;&#26395;&#20320;&#22238;&#22269;&#24037;&#20316;&hellip;</p>
+
+            <div class="your-answer">
+              <div class="your-answer-label">YOUR ANSWER</div>
+              <div class="your-answer-text">&#20808;&#31572;&#24212;&#65292;&#20197;&#21518;&#20877;&#35828;&#12290;<br/>Agree for now, bring it up later.</div>
+            </div>
+
+            <div class="compare">
+              <div class="lens cn">
+                <div class="lens-lbl">&#20013;&#22269;</div>
+                <div class="lens-name">&#23389; (Xi&agrave;o)</div>
+                <div class="lens-desc">Filial piety. Your parents' sacrifice is the soil you grew in.</div>
+                <div class="plus">&check; family loyalty</div>
+                <div class="minus">&#9651; self buried in debt</div>
+              </div>
+              <div class="lens us">
+                <div class="lens-lbl">US LENS</div>
+                <div class="lens-name">Autonomy</div>
+                <div class="lens-desc">Your life is yours. Honest communication is adulthood.</div>
+                <div class="plus">&check; individual agency</div>
+                <div class="minus">&#9651; feels transactional</div>
+              </div>
+            </div>
+
+            <div class="bridge">
+              <div class="bridge-lbl">Both of you</div>
+              <p class="bridge-q">Tell a time you've been caught between what someone gave you and what you wanted for yourself.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Reveal<br/><span class="caption-note">cultural comparison + bridge</span></figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- RESULT -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/china</div>
+          <div class="body">
+            <div class="eyebrow-tiny">YOUR RESULT</div>
+            <p class="result-h-native">&#23478;&#30340;&#37325;&#37327;</p>
+            <p class="result-h-sub">The Weight of Home</p>
+            <p class="result-desc">You lean toward honoring your family. Loyalty is your ground. But your own wishes sometimes become a second language you've stopped speaking fluently.</p>
+
+            <div class="bar-labels">
+              <span class="bar-cn">&#20013;&#22269; 62%</span>
+              <span class="bar-us">38% US</span>
+            </div>
+            <div class="bar">
+              <div class="fill-cn"></div>
+              <div class="fill-us-62"></div>
+            </div>
+
+            <div class="signature">
+              <div class="signature-lbl">What showed up</div>
+              <div class="sig-pills">
+                <span class="pill">weight of family</span>
+                <span class="pill">wish to be known</span>
+                <span class="pill">quiet endurance</span>
+              </div>
+              <p class="sig-body">Three emotions surfaced most across your answers &mdash; the threads underneath the choices.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Result<br/><span class="caption-note">profile + split + signature</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ========== FLOW 03: INDIAN QUIZ ========== -->
+<section class="flow">
+  <div class="flow-head">
+    <span class="flow-num">03</span>
+    <h2 class="flow-title">Indian quiz flow</h2>
+    <span class="flow-route">/india &mdash; English primary, concepts named in Hindi/Sanskrit</span>
+  </div>
+  <p class="flow-desc">English UI throughout (English is the actual lingua franca of Indian higher education and works across North and South). Cultural concepts keep their native names &mdash; <em>log kya kahenge</em>, <em>izzat</em>, <em>sanskaar</em> &mdash; which is what gives the "you are seen" moment.</p>
+
+  <div class="row">
+    <!-- SCENARIO -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/india</div>
+          <div class="body">
+            <div class="progress-row">
+              <span class="progress-num">06 / 10</span>
+              <div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div>
+            </div>
+            <p class="scenario-native" style="font-family: var(--serif);">You're struggling with depression but haven't told your family.</p>
+            <p class="scenario-en">A cousin notices and asks if you're okay.</p>
+
+            <div class="opt">
+              <div class="opt-native" style="font-family: var(--serif);">Say I'm fine. Don't worry them.</div>
+            </div>
+            <div class="opt">
+              <div class="opt-native" style="font-family: var(--serif);">Deflect. Ask about their life instead.</div>
+            </div>
+            <div class="opt selected">
+              <div class="opt-native" style="font-family: var(--serif);">Admit I've been struggling, ask them not to tell anyone.</div>
+            </div>
+            <div class="opt">
+              <div class="opt-native" style="font-family: var(--serif);">Tell them everything, including that I'm seeing someone.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Scenario &mdash; Q6<br/><span class="caption-note">English primary</span></figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- REVEAL -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/india</div>
+          <div class="body">
+            <p class="reveal-scenario" style="font-family: var(--serif);">You're struggling with depression&hellip;</p>
+
+            <div class="your-answer in">
+              <div class="your-answer-label">YOUR ANSWER</div>
+              <div class="your-answer-text">Admit I've been struggling, ask them not to tell anyone.</div>
+            </div>
+
+            <div class="compare">
+              <div class="lens in">
+                <div class="lens-lbl">INDIA LENS</div>
+                <div class="lens-name">Log Kya Kahenge</div>
+                <div class="lens-desc">"What will people say?" The family's standing is the self's standing. Struggle is shared, but selectively.</div>
+                <div class="plus">&check; community as safety net</div>
+                <div class="minus">&#9651; shame tax on honesty</div>
+              </div>
+              <div class="lens us">
+                <div class="lens-lbl">US LENS</div>
+                <div class="lens-name">Vulnerability</div>
+                <div class="lens-desc">Being open about struggles is healthy. Therapy is normalized.</div>
+                <div class="plus">&check; unlocks support</div>
+                <div class="minus">&#9651; can feel performative</div>
+              </div>
+            </div>
+
+            <div class="bridge">
+              <div class="bridge-lbl">Both of you</div>
+              <p class="bridge-q">Tell a time you've been caught between the truth and how it would look to say it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Reveal<br/><span class="caption-note">native concept name in English UI</span></figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- RESULT -->
+    <figure class="screen phone">
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/india</div>
+          <div class="body">
+            <div class="eyebrow-tiny">YOUR RESULT</div>
+            <p class="result-h-native in">Dharma of the Family</p>
+            <p class="result-h-sub">Carrying the weight with grace</p>
+            <p class="result-desc">You carry obligations to the people who raised you as part of who you are &mdash; not as burden, but as belonging. The cost is that your own inner life sometimes goes unnamed.</p>
+
+            <div class="bar-labels">
+              <span class="bar-in">India 58%</span>
+              <span class="bar-us">42% US</span>
+            </div>
+            <div class="bar">
+              <div class="fill-in"></div>
+              <div class="fill-us-58"></div>
+            </div>
+
+            <div class="signature">
+              <div class="signature-lbl">What showed up</div>
+              <div class="sig-pills">
+                <span class="pill">log kya kahenge</span>
+                <span class="pill">the weight of family</span>
+                <span class="pill">shame of needing</span>
+              </div>
+              <p class="sig-body">The emotions underneath your answers, across ten scenarios.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Result<br/><span class="caption-note">emotional signature pills</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ========== FLOW 04: JAPANESE UPDATE ========== -->
+<section class="flow">
+  <div class="flow-head">
+    <span class="flow-num">04</span>
+    <h2 class="flow-title">Japanese quiz &mdash; before &amp; after</h2>
+    <span class="flow-route">/japan &mdash; replace gospel layer with emotion bridge</span>
+  </div>
+  <p class="flow-desc">The existing app ends each scenario with a Christian "third perspective" panel. We replace it with the new emotion-bridge question, consistent with the Chinese and Indian versions. Same scenarios, same cultural comparison &mdash; only the closing layer changes.</p>
+
+  <div class="row">
+    <!-- OLD: GOSPEL -->
+    <figure class="screen phone">
+      <span class="state-tag old">Today &middot; gospel layer</span>
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/japan</div>
+          <div class="body">
+            <div class="your-answer jp">
+              <div class="your-answer-label">YOUR ANSWER</div>
+              <div class="your-answer-text">&#12300;&#22823;&#19976;&#22827;&#65281;&#12301;&#12387;&#12390;&#31505;&#12387;&#12390;&#35328;&#12358;<br/>Smile and say "I'm fine!"</div>
+            </div>
+
+            <div class="compare">
+              <div class="lens jp">
+                <div class="lens-lbl">&#26085;&#26412;</div>
+                <div class="lens-name">&#25105;&#24930; (Gaman)</div>
+                <div class="lens-desc">Endure silently. Don't burden others.</div>
+                <div class="plus">&check; consideration</div>
+                <div class="minus">&#9651; isolation</div>
+              </div>
+              <div class="lens us">
+                <div class="lens-lbl">US LENS</div>
+                <div class="lens-name">Vulnerability</div>
+                <div class="lens-desc">Share struggles. Openness builds trust.</div>
+                <div class="plus">&check; healing</div>
+                <div class="minus">&#9651; performative</div>
+              </div>
+            </div>
+
+            <div class="gospel">
+              <div class="gospel-lbl">A THIRD PERSPECTIVE</div>
+              <p class="gospel-body">On the hardest night of his life, a great teacher told his closest friends: "My heart is breaking. Stay with me."</p>
+              <p class="gospel-en">Not performing strength or weakness. Just being known.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Current build<br/><span class="caption-note">gospel "third perspective"</span></figcaption>
+    </figure>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- NEW: BRIDGE -->
+    <figure class="screen phone">
+      <span class="state-tag new">Proposed &middot; emotion bridge</span>
+      <div class="device">
+        <div class="screen-inner">
+          <div class="status"></div>
+          <div class="url-mini">readtheroom.app/japan</div>
+          <div class="body">
+            <div class="your-answer jp">
+              <div class="your-answer-label">YOUR ANSWER</div>
+              <div class="your-answer-text">&#12300;&#22823;&#19976;&#22827;&#65281;&#12301;&#12387;&#12390;&#31505;&#12387;&#12390;&#35328;&#12358;<br/>Smile and say "I'm fine!"</div>
+            </div>
+
+            <div class="compare">
+              <div class="lens jp">
+                <div class="lens-lbl">&#26085;&#26412;</div>
+                <div class="lens-name">&#25105;&#24930; (Gaman)</div>
+                <div class="lens-desc">Endure silently. Don't burden others.</div>
+                <div class="plus">&check; consideration</div>
+                <div class="minus">&#9651; isolation</div>
+              </div>
+              <div class="lens us">
+                <div class="lens-lbl">US LENS</div>
+                <div class="lens-name">Vulnerability</div>
+                <div class="lens-desc">Share struggles. Openness builds trust.</div>
+                <div class="plus">&check; healing</div>
+                <div class="minus">&#9651; performative</div>
+              </div>
+            </div>
+
+            <div class="bridge">
+              <div class="bridge-lbl">Both of you</div>
+              <p class="bridge-q">Tell a time you've been caught saying "I'm fine" when it wasn't true.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>After the change<br/><span class="caption-note">consistent across all three quizzes</span></figcaption>
+    </figure>
+  </div>
+
+  <div class="change-callout">
+    <strong>What changes:</strong> only the bottom panel. Scenarios, options, and cultural-comparison cards stay as they are in the shipped app. The new bridge question is written per-scenario and shared in structure across Japan, China, and India &mdash; one consistent voice.
+  </div>
+</section>
+
+</body>
+</html>
